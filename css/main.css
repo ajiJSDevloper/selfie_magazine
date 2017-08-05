@@ -1,6 +1,6 @@
 body {
   overflow: hidden;
-  background-color: #fcfcfc;
+  background-color: #e8edf3;
   margin: 0;
   padding: 0; }
 
@@ -331,3 +331,16 @@ body {
   left: 0;
   bottom: 0;
   width: 100%; }
+
+.selfie .tool-bar {
+  width: 100%;
+  min-height: 50px;
+  max-height: 50px;
+  position: absolute; }
+  @media (max-width: 430px) {
+    .selfie .tool-bar {
+      top: 25px; } }
+  .selfie .tool-bar .toolbar-container {
+    margin: 0px auto; }
+    .selfie .tool-bar .toolbar-container h1 {
+      margin: 0px; }

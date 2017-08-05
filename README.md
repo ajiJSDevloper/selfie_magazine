@@ -1,3 +1,3 @@
-# Getting Started With Gulp
+# GPTC Attingal ,Magazine
 
-Gulp example app for the tutorial
+A project with turn.js

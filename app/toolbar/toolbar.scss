@@ -1,0 +1,17 @@
+.selfie{
+    .tool-bar{
+        width: 100%;
+        min-height: 50px;
+        max-height: 50px;
+        position: absolute;
+        @media(max-width:430px){
+            top: 25px;
+        }
+    .toolbar-container{
+        margin: 0px auto;
+        h1{
+            margin: 0px;
+        }
+    }
+    }
+}

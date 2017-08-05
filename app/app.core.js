@@ -8,18 +8,20 @@
         .config(config)
         .controller('magazineController',ctrl);
 
-    function config($stateProvider, $urlRouterProvider) {
-    	$urlRouterProvider.otherwise('/app');
+    function config($stateProvider, $urlRouterProvider,$locationProvider) {
+        $locationProvider.hashPrefix('');
+    	$urlRouterProvider.otherwise('/magazine');
         $stateProvider
             .state('app', {
                 // abstract: true,
-                url: '/app',
+                url: '/magazine',
                 views: {
                     '': {
                         templateUrl: 'app/main.html',
                     },
                     'toolbar@app': {
                         templateUrl: 'app/toolbar/toolbar.html',
+                        controller:'toolbarController as vm'
                     },
                     'magazine@app': {
                         templateUrl: 'app/magazine/magazine.html',
