@@ -11,14 +11,12 @@
 
         function show(){
             var _d=magazineService.getoffset();
-            console.log(_d);
             if(_d.top >= 40) return true;
             else return false
         }
         function getBound(){
             return $('.magazine').width();
         }
-
         vm.headStyle={
             padding:''
         }

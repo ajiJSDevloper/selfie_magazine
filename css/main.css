@@ -1,3 +1,24 @@
+.aj-thumbs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0px 5px;
+  z-index: 500;
+  display: flex;
+  justify-content: space-between;
+  margin: 41px 0px; }
+  .aj-thumbs .aj-thumb-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; }
+  .aj-thumbs .thumbs {
+    margin: 10px;
+    width: 100px; }
+    .aj-thumbs .thumbs:first-child {
+      margin-top: 0px; }
+    .aj-thumbs .thumbs img {
+      width: 100%; }
+
 body {
   overflow: hidden;
   background-color: #e8edf3;

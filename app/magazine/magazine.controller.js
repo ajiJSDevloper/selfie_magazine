@@ -3,7 +3,7 @@
     angular.module('selfie')
         .controller('magazineController', magazineController);
 
-    function magazineController(magazineService,$state) {
+    function magazineController(magazineService,$state,$stateParams,$location) {
         var vm = this;
         vm.init = init;
         
@@ -51,35 +51,22 @@
 
                 when: {
                     turning: function(event, page, view) {
-
-                        var book = $(this),
-                            currentPage = book.turn('page'),
-                            pages = book.turn('pages');
-
+                        var absUrl=$location.absUrl();
+                        var _url=absUrl.split('/');
+                        _url.splice(_url.length - 1);
+                        var baseUrl=_url.join('/');
+                        window.history.pushState('','', baseUrl+'/'+page);
                         disableControls(page);
-                        $('.thumbnails .page-' + currentPage).
-                        parent().
-                        removeClass('current');
-
-                        $('.thumbnails .page-' + page).
-                        parent().
-                        addClass('current');
                   },
 
                     turned: function(event, page, view) {
-
                         disableControls(page);
-
                         $(this).turn('center');
-
                         if (page == 1) {
                             $(this).turn('peel', 'br');
-                        }
-
+                        }                       
                     },
-
                     missing: function(event, pages) {
-                        console.log(pages);
                         for (var i = 0; i < pages.length; i++)
                             magazineService.addPage(pages[i], $(this));
 
@@ -111,32 +98,25 @@
                 flipbook: $('.magazine'),
 
                 max: function() {
-
                     return largeMagazineWidth() / $('.magazine').width();
-
                 },
-
                 when: {
-
                     swipeLeft: function() {
 
                         $(this).zoom('flipbook').turn('next');
 
                     },
-
                     swipeRight: function() {
 
                         $(this).zoom('flipbook').turn('previous');
 
                     },
-
                     resize: function(event, scale, page, pageElement) {
 
                         if (scale == 1)
                             loadSmallPage(page, pageElement);
                         else
                             loadLargePage(page, pageElement);
-
                     },
 
                     zoomIn: function() {
@@ -178,6 +158,12 @@
                     }
                 }
             });
+            var pageNo=$stateParams.page;
+            if (pageNo!==undefined && pageNo!=1) {
+				if ($('.magazine').turn('is'))
+					$('.magazine').turn('page', pageNo);
+			}
+
             resizeViewport();
         }
 
@@ -250,14 +236,7 @@
             // var magazineOffset = $('.magazine').offset();
             magazineService.setMagOffset($('.magazine').offset())
             // boundH = height - magazineOffset.top - $('.magazine').height(),
-            // marginTop = (boundH - $('.thumbnails > div').height()) / 2;
-
-
-
-            // console.log(magazineOffset);
-
-        
-            
+            // marginTop = (boundH - $('.thumbnails > div').height()) / 2;          
             $('.magazine').addClass('animated');
 
         }
@@ -305,7 +284,6 @@
         function loadLargePage(page, pageElement) {
             var img = $('<img />');
             img.load(function() {
-
                 var prevImg = pageElement.find('img');
                 $(this).css({
                     width: '100%',
@@ -324,9 +302,7 @@
                 width: '100%',
                 height: '100%'
             });
-
             img.unbind('load');
-
             img.attr('src', 'pages/' + page + '.jpg');
         }
     // Next button

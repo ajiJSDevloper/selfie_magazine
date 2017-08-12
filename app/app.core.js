@@ -10,20 +10,38 @@
 
     function config($stateProvider, $urlRouterProvider,$locationProvider) {
         $locationProvider.hashPrefix('');
-    	$urlRouterProvider.otherwise('/magazine');
+    	$urlRouterProvider.otherwise('/magazine/page/1');
         $stateProvider
-            .state('app', {
+            .state('magazine', {
                 // abstract: true,
                 url: '/magazine',
                 views: {
                     '': {
                         templateUrl: 'app/main.html',
                     },
-                    'toolbar@app': {
+                    'toolbar@magazine': {
                         templateUrl: 'app/toolbar/toolbar.html',
                         controller:'toolbarController as vm'
                     },
-                    'magazine@app': {
+                    'magazine@magazine': {
+                        templateUrl: 'app/magazine/magazine.html',
+                        controller:'magazineController as vm'
+                    }
+                }
+            })
+            .state('magazine_pageno', {
+                // abstract: true,
+                url: '/magazine/page/:page',
+                cache:true,
+                views: {
+                    '': {
+                        templateUrl: 'app/main.html',
+                    },
+                    'toolbar@magazine_pageno': {
+                        templateUrl: 'app/toolbar/toolbar.html',
+                        controller:'toolbarController as vm'
+                    },
+                    'magazine@magazine_pageno': {
                         templateUrl: 'app/magazine/magazine.html',
                         controller:'magazineController as vm'
                     }
