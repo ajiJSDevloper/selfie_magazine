@@ -1,13 +1,16 @@
 'use strict';
-(function() {
+(function () {
     angular.module('selfie')
         .controller('magazineController', magazineController);
 
-    function magazineController(magazineService,$state,$stateParams,$location) {
+    function magazineController(magazineService, $state, $stateParams, $location) {
         var vm = this;
+        vm.mobileHeight=150;
         vm.init = init;
-        
+        vm.thumbOpen = thumbOpen;
+        vm.getmobileHeight=getmobileHeight;
         var selfie = $('.magazine');
+
         function init() {
             if (selfie.width() == 0 || selfie.height() == 0) {
                 setTimeout(init(), 10);
@@ -41,7 +44,7 @@
 
                 // Elevation from the edge of the selfie when turning a page
 
-                elevation: 50,
+                elevation: 100,
 
                 // The number of pages
 
@@ -50,23 +53,23 @@
                 // Events
 
                 when: {
-                    turning: function(event, page, view) {
-                        var absUrl=$location.absUrl();
-                        var _url=absUrl.split('/');
+                    turning: function (event, page, view) {
+                        var absUrl = $location.absUrl();
+                        var _url = absUrl.split('/');
                         _url.splice(_url.length - 1);
-                        var baseUrl=_url.join('/');
-                        window.history.pushState('','', baseUrl+'/'+page);
+                        var baseUrl = _url.join('/');
+                        window.history.pushState('', '', baseUrl + '/' + page);
                         disableControls(page);
-                  },
+                    },
 
-                    turned: function(event, page, view) {
+                    turned: function (event, page, view) {
                         disableControls(page);
                         $(this).turn('center');
                         if (page == 1) {
                             $(this).turn('peel', 'br');
-                        }                       
+                        }
                     },
-                    missing: function(event, pages) {
+                    missing: function (event, pages) {
                         for (var i = 0; i < pages.length; i++)
                             magazineService.addPage(pages[i], $(this));
 
@@ -88,7 +91,7 @@
                 $('.next-button').show();
         }
 
-        
+
         function isChrome() {
             return navigator.userAgent.indexOf('Chrome') != -1;
         }
@@ -97,21 +100,21 @@
             $('.magazine-viewport').zoom({
                 flipbook: $('.magazine'),
 
-                max: function() {
+                max: function () {
                     return largeMagazineWidth() / $('.magazine').width();
                 },
                 when: {
-                    swipeLeft: function() {
+                    swipeLeft: function () {
 
                         $(this).zoom('flipbook').turn('next');
 
                     },
-                    swipeRight: function() {
+                    swipeRight: function () {
 
                         $(this).zoom('flipbook').turn('previous');
 
                     },
-                    resize: function(event, scale, page, pageElement) {
+                    resize: function (event, scale, page, pageElement) {
 
                         if (scale == 1)
                             loadSmallPage(page, pageElement);
@@ -119,7 +122,7 @@
                             loadLargePage(page, pageElement);
                     },
 
-                    zoomIn: function() {
+                    zoomIn: function () {
 
                         $('.thumbnails').hide();
                         $('.made').hide();
@@ -137,20 +140,20 @@
                             delay(2000).
                             animate({
                                 opacity: 0
-                            }, 500, function() {
+                            }, 500, function () {
                                 $(this).remove();
                             });
                         }
                     },
 
-                    zoomOut: function() {
+                    zoomOut: function () {
 
                         $('.exit-message').hide();
                         $('.thumbnails').fadeIn();
                         $('.made').fadeIn();
                         $('.zoom-icon').removeClass('zoom-icon-out').addClass('zoom-icon-in');
 
-                        setTimeout(function() {
+                        setTimeout(function () {
                             $('.magazine').addClass('animated').removeClass('zoom-in');
                             resizeViewport();
                         }, 0);
@@ -158,25 +161,25 @@
                     }
                 }
             });
-            var pageNo=$stateParams.page;
-            if (pageNo!==undefined && pageNo!=1) {
-				if ($('.magazine').turn('is'))
-					$('.magazine').turn('page', pageNo);
-			}
+            var pageNo = $stateParams.page;
+            if (pageNo !== undefined && pageNo != 1) {
+                if ($('.magazine').turn('is'))
+                    $('.magazine').turn('page', pageNo);
+            }
 
             resizeViewport();
         }
 
 
 
-        $(window).resize(function() {
-            setTimeout(function(){
+        $(window).resize(function () {
+            setTimeout(function () {
                 resizeViewport();
-            },1000)
-        }).bind('orientationchange', function() {
-            setTimeout(function(){
+            }, 1000)
+        }).bind('orientationchange', function () {
+            setTimeout(function () {
                 resizeViewport();
-            },1000)
+            }, 1000)
         });
 
         function resizeViewport() {
@@ -184,8 +187,8 @@
                 height = $(window).height(),
                 options = $('.magazine').turn('options');
 
-            if(width<=800 && height >400) selfie.turn("display", "single")
-            else selfie.turn("display", "double")   
+            if (width <= 800 && height > 400) selfie.turn("display", "single")
+            else selfie.turn("display", "double")
 
             $('.magazine').removeClass('animated');
             $('.magazine-viewport').css({
@@ -200,14 +203,13 @@
                     boundWidth: Math.min(options.width, width),
                     boundHeight: Math.min(options.height, height)
                 });
-                if(width<=800  && width>=600 && height > 900 ){
-                bound.width-=50;    
-                bound.height=(650/500)*bound.width;
-            }
-            else if(width<=600){
-                bound.width-=25;    
-                bound.height=(650/500)*bound.width;
-            }
+                if (width <= 800 && width >= 600 && height > 900) {
+                    bound.width -= 50;
+                    bound.height = (650 / 500) * bound.width;
+                } else if (width <= 600) {
+                    bound.width -= 25;
+                    bound.height = (650 / 500) * bound.width;
+                }
                 if (bound.width % 2 !== 0)
                     bound.width -= 1;
                 if (bound.width != $('.magazine').width() || bound.height != $('.magazine').height()) {
@@ -226,11 +228,22 @@
                         backgroundPosition: '-4px ' + (bound.height / 2 - 32 / 2) + 'px'
                     });
                 }
-
-                $('.magazine').css({
-                    top: -bound.height / 2,
-                    left: -bound.width / 2
-                });
+                if (width < 500){
+                    $('.magazine').css({
+                        top: -(bound.height - 20) / 2,
+                        left: -(bound.width - 150) / 2
+                    });
+                }
+                console.log(bound);
+                console.log(bound.height/2);
+                if (width < 500) {
+                    var top=(height/2)-50;
+                    $('.magazine').css({
+                        top: -(top),
+                        left: -(bound.width) / 2
+                    });
+                    calcMoblieThumbHeight(height,bound.height);
+                }
             }
 
             // var magazineOffset = $('.magazine').offset();
@@ -240,7 +253,18 @@
             $('.magazine').addClass('animated');
 
         }
+
+        function calcMoblieThumbHeight(height,mag_height) {
+            var remins=height - (mag_height+45);
+            vm.mobileHeight=remins-10;
+        }
+
+        function getmobileHeight(){
+            return vm.mobileHeight;
+        }
+
         function calculateBound(d) {
+
             var bound = {
                 width: d.width,
                 height: d.height
@@ -255,7 +279,7 @@
                     bound.height = Math.round(d.boundWidth / rel)
                 }
             }
-            bound.height=bound.height-20;
+            bound.height = bound.height - 20;
             return bound;
         }
         if ($.isTouch)
@@ -264,7 +288,7 @@
             $('.magazine-viewport').bind('zoom.tap', zoomTo);
 
         function zoomTo(event) {
-            setTimeout(function() {
+            setTimeout(function () {
                 if ($('.magazine-viewport').data().regionClicked) {
                     $('.magazine-viewport').data().regionClicked = false;
                 } else {
@@ -283,7 +307,7 @@
 
         function loadLargePage(page, pageElement) {
             var img = $('<img />');
-            img.load(function() {
+            img.load(function () {
                 var prevImg = pageElement.find('img');
                 $(this).css({
                     width: '100%',
@@ -305,32 +329,36 @@
             img.unbind('load');
             img.attr('src', 'pages/' + page + '.jpg');
         }
-    // Next button
-     $('.next-button').bind($.mouseEvents.over, function() {
-		$(this).addClass('next-button-hover');
-	}).bind($.mouseEvents.out, function() {
-		$(this).removeClass('next-button-hover');
-	}).bind($.mouseEvents.down, function() {
-		$(this).addClass('next-button-down');
-	}).bind($.mouseEvents.up, function() {
-		$(this).removeClass('next-button-down');
-	}).click(function() {
-		$('.magazine').turn('next');
-	});
+        // Next button
+        $('.next-button').bind($.mouseEvents.over, function () {
+            $(this).addClass('next-button-hover');
+        }).bind($.mouseEvents.out, function () {
+            $(this).removeClass('next-button-hover');
+        }).bind($.mouseEvents.down, function () {
+            $(this).addClass('next-button-down');
+        }).bind($.mouseEvents.up, function () {
+            $(this).removeClass('next-button-down');
+        }).click(function () {
+            $('.magazine').turn('next');
+        });
 
-	// Events for the next button
-	
-	$('.previous-button').bind($.mouseEvents.over, function() {
-		$(this).addClass('previous-button-hover');
-	}).bind($.mouseEvents.out, function() {
-		$(this).removeClass('previous-button-hover');
-	}).bind($.mouseEvents.down, function() {
-		$(this).addClass('previous-button-down');
-	}).bind($.mouseEvents.up, function() {
-		$(this).removeClass('previous-button-down');
-	}).click(function() {
-		$('.magazine').turn('previous');
-	});
+        // Events for the next button
+
+        $('.previous-button').bind($.mouseEvents.over, function () {
+            $(this).addClass('previous-button-hover');
+        }).bind($.mouseEvents.out, function () {
+            $(this).removeClass('previous-button-hover');
+        }).bind($.mouseEvents.down, function () {
+            $(this).addClass('previous-button-down');
+        }).bind($.mouseEvents.up, function () {
+            $(this).removeClass('previous-button-down');
+        }).click(function () {
+            $('.magazine').turn('previous');
+        });
+
+        function thumbOpen(id) {
+            console.log(id);
+        }
 
     }
 })();
