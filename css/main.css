@@ -437,5 +437,38 @@ body {
           padding: 5px 25px 5px 0px;
           font-weight: bold;
           font-size: 16px; }
+          .selfie .tool-bar .toolbar-container .menu ul li a {
+            text-decoration: none; }
+        @media (max-width: 620px) {
+          .selfie .tool-bar .toolbar-container .menu ul {
+            display: none; } }
+      .selfie .tool-bar .toolbar-container .menu .menu-btn {
+        display: none;
+        background: none;
+        border: none; }
+        @media (max-width: 620px) {
+          .selfie .tool-bar .toolbar-container .menu .menu-btn {
+            display: block; } }
+        .selfie .tool-bar .toolbar-container .menu .menu-btn:hover {
+          transform: scale(1.2);
+          background: rgba(204, 204, 204, 0.2); }
   .selfie .tool-bar .toolbar-container h1 {
     margin: 0px; }
+
+.dropdown-menu {
+  background: rgba(54, 58, 58, 0.86);
+  min-height: 200px;
+  max-height: 150px; }
+  .dropdown-menu ul {
+    padding: 0px 15px; }
+    .dropdown-menu ul li {
+      list-style-type: none;
+      padding: 8px;
+      color: #fff;
+      border-bottom: 1px solid transparent; }
+      .dropdown-menu ul li a {
+        text-decoration: none;
+        color: inherit;
+        font-weight: 600; }
+      .dropdown-menu ul li:hover {
+        border-bottom: 1px solid #fff; }

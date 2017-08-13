@@ -184,10 +184,9 @@
 
         function resizeViewport() {
             var width = $(window).width(),
-                height = $(window).height(),
-                options = $('.magazine').turn('options');
+                height = $(window).height();
 
-            if (width <= 800 && height > 400) selfie.turn("display", "single")
+            if (width <= 800 && height > 450) selfie.turn("display", "single")
             else selfie.turn("display", "double")
 
             $('.magazine').removeClass('animated');
@@ -196,17 +195,21 @@
                 height: height
             }).
             zoom('resize');
+            var options = selfie.turn('options');
             if ($('.magazine').turn('zoom') == 1) {
                 var bound = calculateBound({
                     width: options.width,
                     height: options.height,
                     boundWidth: Math.min(options.width, width),
-                    boundHeight: Math.min(options.height, height)
+                    boundHeight: Math.min(options.height, height),
+                    options:{w:width,h:height}
                 });
-                if (width <= 800 && width >= 600 && height > 900) {
-                    bound.width -= 50;
+                if (width <= 800 && width >= 600 && height > 700) {
+                    console.log("Condition-1")
+                    bound.width -=160;
                     bound.height = (650 / 500) * bound.width;
                 } else if (width <= 600) {
+                    console.log("Condition-2")
                     bound.width -= 25;
                     bound.height = (650 / 500) * bound.width;
                 }
@@ -228,14 +231,16 @@
                         backgroundPosition: '-4px ' + (bound.height / 2 - 32 / 2) + 'px'
                     });
                 }
-                if (width < 500){
+                if (width > 500){
+                    var top=(bound.height - 20)/2;
+                    var left= (width/2) - 180;
+                    if(width < 800 && height > 900)
+                    var top=(height/2)-50;
                     $('.magazine').css({
-                        top: -(bound.height - 20) / 2,
-                        left: -(bound.width - 150) / 2
+                        top: -(top),
+                        left: -(left)
                     });
                 }
-                console.log(bound);
-                console.log(bound.height/2);
                 if (width < 500) {
                     var top=(height/2)-50;
                     $('.magazine').css({
@@ -264,7 +269,10 @@
         }
 
         function calculateBound(d) {
-
+            // console.log(d);
+            // if(d.width < 1165){
+            //     d.width-=160;
+            // }
             var bound = {
                 width: d.width,
                 height: d.height
@@ -279,6 +287,13 @@
                     bound.height = Math.round(d.boundWidth / rel)
                 }
             }
+            console.log(bound);
+            if(clacResolution(d.options.w,d.options.h)){
+                var w=bound.width;
+                bound.width=d.options.w-200;
+                bound.height=(bound.height/w)*bound.width;
+            }
+            console.log(bound);
             bound.height = bound.height - 20;
             return bound;
         }
@@ -357,8 +372,16 @@
         });
 
         function thumbOpen(id) {
-            console.log(id);
         }
+
+        function clacResolution(w,h){
+            // Magazine display as single page.
+            console.log(w ,h);
+            if(w <= 800 && h > 450) return false;
+
+            else if(w < 1120) return true;
+        }
+
 
     }
 })();
