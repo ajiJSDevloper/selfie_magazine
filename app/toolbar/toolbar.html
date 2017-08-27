@@ -3,14 +3,14 @@
         <div>
              <h1>SELFIE</h1>
         </div>
-        <div class="menu">
+        <div class="menu" ng-init="vm.menu=false">
             <ul class="resposive">
                 <li ng-repeat="menu in vm.menuOptions"><a ui-sref="">{{menu.title}}</a></li>
             </ul>  
-            <button class="menu-btn" ng-click="vm.checked=true;" ng-init="vm.checked=false">
+            <button class="menu-btn" ng-click="vm.checked=true;" ng-init="vm.checked=false;vm.menu=true">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
-            <div pageslide ps-open="vm.checked" ps-side="top" class="dropdown-menu">
+            <div pageslide ps-open="vm.checked" ps-side="top" class="dropdown-menu" ng-if="vm.menu">
                 <ul class="dropdown">
                     <li ng-repeat="menu in vm.menuOptions"><a ui-sref="">{{menu.title}}</a></li>
                 </ul>

@@ -19,29 +19,45 @@
     .aj-thumbs .thumbs img {
       width: 100%; }
 
+.gradient.no-bg {
+  background: none; }
+
 .scroll-bar::-webkit-scrollbar {
   width: 6px;
-  background-color: #F5F5F5; }
+  background-color: rgba(245, 245, 245, 0); }
 
 .scroll-bar ::-webkit-scrollbar-thumb {
   background-color: #000000; }
+
+.scroll-bar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(81, 117, 12, 0.05);
+  background-color: rgba(81, 117, 12, 0.05); }
+
+.scroll-bar::-webkit-scrollbar {
+  width: 6px;
+  background-color: rgba(245, 245, 245, 0); }
+
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 200, 0, 0.58); }
 
 body {
   overflow: hidden;
   background-color: #e8edf3;
   margin: 0;
   padding: 0;
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  background-image: url("../assets/college.png"); }
 
 .magazine-viewport {
   z-index: 550; }
   .magazine-viewport .side-bar {
     top: 45px;
-    max-width: 150px;
-    min-width: 150px;
+    max-width: 130px;
+    min-width: 130px;
     height: 100%;
-    background: #ccc;
-    position: fixed; }
+    background: rgba(134, 94, 2, 0.52);
+    position: fixed;
+    z-index: 6000; }
     @media (max-width: 530px) {
       .magazine-viewport .side-bar {
         display: none; } }
@@ -49,10 +65,19 @@ body {
       height: 100%;
       overflow-y: auto; }
       .magazine-viewport .side-bar .aj-thumb-layout .thumbs {
+        cursor: pointer;
         margin: 10px;
-        text-align: center; }
+        text-align: center;
+        width: 100px; }
+        .magazine-viewport .side-bar .aj-thumb-layout .thumbs img {
+          width: 100%; }
         .magazine-viewport .side-bar .aj-thumb-layout .thumbs p {
-          margin: 6px 0; }
+          margin: 6px 0;
+          color: #252222;
+          font-weight: 500;
+          font-size: 13px;
+          background: #ccc;
+          padding: 1px; }
   .magazine-viewport .magazine .menu {
     position: relative;
     z-index: 200;
@@ -70,15 +95,16 @@ body {
     .mobile-thumb {
       display: block; } }
   .mobile-thumb .aji-thumb-layout-mobile {
-    width: 100px;
-    max-width: 100px;
-    display: flex;
-    justify-content: space-between;
     width: 100%;
-    flex-direction: row;
-    text-align: center; }
+    height: 100%;
+    overflow-x: scroll;
+    overflow-y: scroll; }
     .mobile-thumb .aji-thumb-layout-mobile .thumbs {
-      margin: 10px; }
+      margin: 10px;
+      display: inline-block;
+      width: 100px; }
+      .mobile-thumb .aji-thumb-layout-mobile .thumbs img {
+        width: 100%; }
       .mobile-thumb .aji-thumb-layout-mobile .thumbs p {
         margin: 6px 0; }
 
@@ -163,6 +189,8 @@ body {
   background-image: -ms-linear-gradient(left, transparent 95%, rgba(0, 0, 0, 0.2) 100%);
   background-image: -o-linear-gradient(left, transparent 95%, rgba(0, 0, 0, 0.2) 100%);
   background-image: linear-gradient(left, transparent 95%, rgba(0, 0, 0, 0.2) 100%); }
+  .magazine .even .gradient.no-bg {
+    background: none; }
 
 .magazine .odd .gradient {
   position: absolute;
@@ -176,6 +204,8 @@ body {
   background-image: -ms-linear-gradient(right, transparent 95%, rgba(0, 0, 0, 0.15) 100%);
   background-image: -o-linear-gradient(right, transparent 95%, rgba(0, 0, 0, 0.15) 100%);
   background-image: linear-gradient(right, transparent 95%, rgba(0, 0, 0, 0.15) 100%); }
+  .magazine .odd .gradient.no-bg {
+    background: none; }
 
 .magazine-viewport .zoom-in .even .gradient,
 .magazine-viewport .zoom-in .odd .gradient {
@@ -416,29 +446,35 @@ body {
   max-height: 45px;
   position: absolute;
   z-index: 1000;
-  background: #fff;
   display: flex;
   justify-content: center;
-  flex-direction: column; }
+  flex-direction: column;
+  background: rgba(124, 90, 160, 0.43);
+  color: #fff; }
   .selfie .tool-bar .toolbar-container {
     display: flex;
     justify-content: space-between;
-    padding: 0px 20px; }
+    padding: 0px 20px;
+    color: inherit; }
     .selfie .tool-bar .toolbar-container .menu {
       display: flex;
       flex-direction: column;
-      justify-content: center; }
+      justify-content: center;
+      color: inherit; }
       .selfie .tool-bar .toolbar-container .menu ul {
         padding: 0px;
-        margin: 0px; }
+        margin: 0px;
+        color: inherit; }
         .selfie .tool-bar .toolbar-container .menu ul li {
           float: left;
           list-style-type: none;
           padding: 5px 25px 5px 0px;
           font-weight: bold;
-          font-size: 16px; }
+          font-size: 16px;
+          color: inherit; }
           .selfie .tool-bar .toolbar-container .menu ul li a {
-            text-decoration: none; }
+            text-decoration: none;
+            color: inherit; }
         @media (max-width: 620px) {
           .selfie .tool-bar .toolbar-container .menu ul {
             display: none; } }
@@ -453,7 +489,8 @@ body {
           transform: scale(1.2);
           background: rgba(204, 204, 204, 0.2); }
   .selfie .tool-bar .toolbar-container h1 {
-    margin: 0px; }
+    margin: 0px;
+    text-shadow: 5px 3px 14px rgba(1, 24, 60, 0.96); }
 
 .dropdown-menu {
   background: rgba(54, 58, 58, 0.86);

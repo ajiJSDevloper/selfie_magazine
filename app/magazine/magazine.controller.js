@@ -3,13 +3,18 @@
     angular.module('selfie')
         .controller('magazineController', magazineController);
 
-    function magazineController(magazineService, $state, $stateParams, $location) {
+    function magazineController(magazineService, $state, $stateParams, $location,$timeout) {
         var vm = this;
         vm.mobileHeight=150;
         vm.init = init;
         vm.thumbOpen = thumbOpen;
         vm.getmobileHeight=getmobileHeight;
+        vm.thumbScrolled=thumbScrolled;
+        vm.scrollProgress=false;
+        vm.zoomIn=false;
+        vm.mediaCurrent={w:0,h:0}
         var selfie = $('.magazine');
+        vm.thumbs=[];
 
         function init() {
             if (selfie.width() == 0 || selfie.height() == 0) {
@@ -77,8 +82,19 @@
                 }
             });
             zoomJsInit();
-        }
+            fillThumbs(1,6);
+            
 
+        }
+        function fillThumbs(first,last,cb){
+            for(var i=first; i < last+1 ; i++){
+                if(vm.thumbs.indexOf(i)==-1){
+                    vm.thumbs.push(i);
+                }
+            }
+            if(cb) cb();
+        }
+        
         function disableControls(page) {
             if (page == 1)
                 $('.previous-button').hide();
@@ -91,7 +107,21 @@
                 $('.next-button').show();
         }
 
-
+        function thumbScrolled(){
+            if(vm.scrollProgress) return;
+            $timeout(function(){
+                var last;
+                var len=vm.thumbs.length;
+                if(len==0) return;
+                if(len >=156) return;
+                if(!vm.scrollProgress){
+                    vm.scrollProgress=true;
+                    fillThumbs(len,len+10,function(){
+                        vm.scrollProgress=false;
+                    })
+                }
+            },1000)
+        }
         function isChrome() {
             return navigator.userAgent.indexOf('Chrome') != -1;
         }
@@ -166,7 +196,6 @@
                 if ($('.magazine').turn('is'))
                     $('.magazine').turn('page', pageNo);
             }
-
             resizeViewport();
         }
 
@@ -185,9 +214,22 @@
         function resizeViewport() {
             var width = $(window).width(),
                 height = $(window).height();
+            vm.mediaCurrent={
+                w:width,
+                h:height
+            }
 
-            if (width <= 800 && height > 450) selfie.turn("display", "single")
-            else selfie.turn("display", "double")
+            var options = selfie.turn('options');
+            if (width <= 800 && height > 450){
+                selfie.turn("display", "single");
+                options.gradients=false;
+                removeShaddow()
+            } 
+            else {
+                options.gradients=true;
+                selfie.turn("display", "double");
+                addShaddow()
+            }
 
             $('.magazine').removeClass('animated');
             $('.magazine-viewport').css({
@@ -195,7 +237,7 @@
                 height: height
             }).
             zoom('resize');
-            var options = selfie.turn('options');
+            
             if ($('.magazine').turn('zoom') == 1) {
                 var bound = calculateBound({
                     width: options.width,
@@ -205,11 +247,9 @@
                     options:{w:width,h:height}
                 });
                 if (width <= 800 && width >= 600 && height > 700) {
-                    console.log("Condition-1")
                     bound.width -=160;
                     bound.height = (650 / 500) * bound.width;
                 } else if (width <= 600) {
-                    console.log("Condition-2")
                     bound.width -= 25;
                     bound.height = (650 / 500) * bound.width;
                 }
@@ -233,7 +273,7 @@
                 }
                 if (width > 500){
                     var top=(bound.height - 20)/2;
-                    var left= (width/2) - 180;
+                    var left= (width/2) - 160;
                     if(width < 800 && height > 900)
                     var top=(height/2)-50;
                     $('.magazine').css({
@@ -258,6 +298,17 @@
             $('.magazine').addClass('animated');
 
         }
+        function removeShaddow(){
+            var k=$('.gradient').each(function(){
+                $( this ).addClass( "no-bg" );
+            });           
+        }
+
+        function addShaddow(){
+             var k=$('.gradient').each(function(){
+                $( this ).removeClass( "no-bg" );
+            });
+        }
 
         function calcMoblieThumbHeight(height,mag_height) {
             var remins=height - (mag_height+45);
@@ -269,7 +320,6 @@
         }
 
         function calculateBound(d) {
-            // console.log(d);
             // if(d.width < 1165){
             //     d.width-=160;
             // }
@@ -287,13 +337,11 @@
                     bound.height = Math.round(d.boundWidth / rel)
                 }
             }
-            console.log(bound);
             if(clacResolution(d.options.w,d.options.h)){
                 var w=bound.width;
                 bound.width=d.options.w-200;
                 bound.height=(bound.height/w)*bound.width;
             }
-            console.log(bound);
             bound.height = bound.height - 20;
             return bound;
         }
@@ -303,21 +351,31 @@
             $('.magazine-viewport').bind('zoom.tap', zoomTo);
 
         function zoomTo(event) {
+            console.log("kkkkk")
             setTimeout(function () {
                 if ($('.magazine-viewport').data().regionClicked) {
                     $('.magazine-viewport').data().regionClicked = false;
                 } else {
                     if ($('.magazine-viewport').zoom('value') == 1) {
                         $('.magazine-viewport').zoom('zoomIn', event);
+                        $timeout(function(){
+                            vm.zoomIn=true;
+                        },100)
+                        console.log(vm.zoomIn);
                     } else {
                         $('.magazine-viewport').zoom('zoomOut');
+                        $timeout(function(){
+                            vm.zoomIn=false;
+                        },100)
                     }
                 }
             }, 1);
         }
 
         function largeMagazineWidth() {
+            if(vm.mediaCurrent.w >=1000)
             return 2214;
+            else return 1107;
         }
 
         function loadLargePage(page, pageElement) {
@@ -372,13 +430,14 @@
         });
 
         function thumbOpen(id) {
+                // $state.go('magazine_pageno',{page:id})
+                if ($('.magazine').turn('is'))
+                    $('.magazine').turn('page', id);
         }
 
         function clacResolution(w,h){
             // Magazine display as single page.
-            console.log(w ,h);
             if(w <= 800 && h > 450) return false;
-
             else if(w < 1120) return true;
         }
 

@@ -53,8 +53,7 @@
                 img.appendTo(pageElement);
                 pageElement.find('.loader').remove();
             })
-            if(page==0) page=1;
-            page=page%12;
+            
             img.attr('src', 'pages/' + page + '.jpg');
         }
 

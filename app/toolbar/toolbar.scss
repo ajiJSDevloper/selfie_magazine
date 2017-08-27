@@ -5,10 +5,12 @@
         max-height: 45px;
         position: absolute;
         z-index: 1000;
-        background: #fff;
+        // background: #fff;
         display: flex;
         justify-content: center;
         flex-direction: column;
+        background: rgba(124, 90, 160, 0.43);
+        color: #fff;
         @media(max-width: 430px) {
             // top: 25px;
         }
@@ -16,21 +18,26 @@
             display: flex;
             justify-content: space-between;
             padding: 0px 20px;
+            color: inherit;
             .menu {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                color: inherit;
                 ul {
                     padding: 0px;
                     margin: 0px;
+                    color: inherit;
                     li {
                         float: left;
                         list-style-type: none;
                         padding: 5px 25px 5px 0px; // text-transform: uppercase;
                         font-weight: bold;
                         font-size: 16px;
+                        color: inherit;
                         a {
                             text-decoration: none;
+                            color: inherit;
                         }
                     }
                     @media(max-width: 620px) {
@@ -54,6 +61,7 @@
         .toolbar-container {
             h1 {
                 margin: 0px;
+                text-shadow: 5px 3px 14px rgba(1, 24, 60, 0.96);
             }
         }
     }

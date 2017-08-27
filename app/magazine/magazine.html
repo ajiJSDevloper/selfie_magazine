@@ -1,34 +1,32 @@
-
-<div class="magazine-viewport" ng-init="vm.init()">
-        <div class="side-bar">
-            <!--<div class="head">
-                <h1>SELFIE</h1>
-            </div>-->
-            <div class="aj-thumb-layout scroll-bar">
-                <div ng-repeat="thumb in [1,2,3,4,5,6]" class="thumbs" ng-click="vm.thumbOpen(thumb)">
-                    <img src="pages/{{thumb}}-thumb.jpg">
-                    <p>Page - {{thumb}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="container" >
-            <div class="magazine">
-                <!-- Next button -->
-                <div ignore="1" class="next-button"></div>
-                <!-- Previous button -->
-                <div ignore="1" class="previous-button"></div>
-                
-            </div>
-        </div>
+<div class="magazine-viewport" ng-init="vm.init()" >
+   <div class="side-bar" >
+      <!--<div class="head">
+         <h1>SELFIE</h1>
+         </div>-->
+      <div class="aj-thumb-layout scroll-bar"  scroll on-scrolled="vm.thumbScrolled()">
+         <div ng-repeat="thumb in vm.thumbs"  class="thumbs" ng-click="vm.thumbOpen(thumb)" title="Page-{{thumb}}">
+            <img src="pages/{{thumb}}-thumb.jpg">
+            <p>Page - {{thumb}}</p>
+         </div>
+      </div>
+   </div>
+   <div class="container" >
+      <div class="magazine">
+         <!-- Next button -->
+         <div ignore="1" class="next-button"></div>
+         <!-- Previous button -->
+         <div ignore="1" class="previous-button"></div>
+      </div>
+   </div>
 </div>
-<div class="mobile-thumb scroll-bar" style="height:{{vm.getmobileHeight()}};">
-            <!--<div class="head">
-                <h1>SELFIE</h1>
-            </div>-->
-            <div class="aji-thumb-layout-mobile">
-                <div ng-repeat="thumb in [1,2,3,4,5,6]" class="thumbs" ng-click="vm.thumbOpen(thumb)">
-                    <img src="pages/{{thumb}}-thumb.jpg">
-                    <p>Page - {{thumb}}</p>
-                </div>
-            </div>
-        </div>
+<div class="mobile-thumb scroll-bar" style="height:{{vm.getmobileHeight()}};" ng-hide="vm.zoomIn">
+   <!--<div class="head">
+      <h1>SELFIE</h1>
+      </div>-->
+   <div class="aji-thumb-layout-mobile">
+      <div ng-repeat="thumb in vm.thumbs" class="thumbs" ng-click="vm.thumbOpen(thumb)">
+         <img src="pages/{{thumb}}-thumb.jpg">
+         <p>Page - {{thumb}}</p>
+      </div>
+   </div>
+</div>
