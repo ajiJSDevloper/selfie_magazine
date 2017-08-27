@@ -10,11 +10,11 @@
 
     function config($stateProvider, $urlRouterProvider,$locationProvider) {
         $locationProvider.hashPrefix('');
-    	$urlRouterProvider.otherwise('/magazine/page/1');
+    	$urlRouterProvider.otherwise('/selfie/1');
         $stateProvider
             .state('magazine', {
                 // abstract: true,
-                url: '/magazine',
+                url: '/selfie',
                 views: {
                     '': {
                         templateUrl: 'app/main.html',
@@ -31,7 +31,7 @@
             })
             .state('magazine_pageno', {
                 // abstract: true,
-                url: '/magazine/page/:page',
+                url: '/selfie/:page',
                 cache:true,
                 views: {
                     '': {
